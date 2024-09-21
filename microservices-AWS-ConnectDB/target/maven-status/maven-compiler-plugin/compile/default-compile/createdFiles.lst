@@ -1,0 +1,6 @@
+com\ciq\MicroservicesAwsConnectDbApplication.class
+com\ciq\service\ProductServiceImp.class
+com\ciq\entity\Product.class
+com\ciq\service\ProductService.class
+com\ciq\controller\ProductController.class
+com\ciq\repo\ProductReposi.class
