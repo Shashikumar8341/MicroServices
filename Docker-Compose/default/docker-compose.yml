@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tree
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    ports:
+      - "3307:3306"
+    volumes:
+     - db-data:/var/lib/mysql
+
+  servcie1:
+    image: user_service
+    container_name: user_container
+    restart: always
+    ports:
+      - "8090:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/tree?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      depends_on:
+      mysql:
+      condition: service_healthy
+
+  service2:
+    image: citizen_service
+    restart: always
+    container_name: citizen_container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/tree?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8091:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  service3:
+    image: student_service
+    restart: always
+    container_name: student_container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/tree?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8092:8081"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  db-data:
