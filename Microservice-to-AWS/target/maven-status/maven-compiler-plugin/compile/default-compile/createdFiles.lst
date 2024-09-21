@@ -1,0 +1,6 @@
+com\ciq\controller\EmployeController.class
+com\ciq\entity\Employe.class
+com\ciq\repository\EmployeRepo.class
+com\ciq\MicroserviceToAwsApplication.class
+com\ciq\service\EmployeServiceImp.class
+com\ciq\service\EmployeService.class
